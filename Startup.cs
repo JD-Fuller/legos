@@ -26,6 +26,17 @@ namespace legos
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddScoped<IDbConnection>(x => CreateDbConnection());
+
+            Services.AddTransient<LegosService>();
+            Services.AddTransient<LegosRepository>();
+        }
+
+        private IDbConnection CreateDbConnection()
+        {
+            var connectionString = Configuration["db:gearhost"];
+            return new MySqlConnection(connectionString);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
